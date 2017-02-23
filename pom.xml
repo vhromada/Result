@@ -12,6 +12,7 @@
 
     <groupId>cz.vhromada.validation</groupId>
     <artifactId>validation</artifactId>
+    <packaging>pom</packaging>
     <version>1.0.0</version>
 
     <name>Validation</name>
@@ -40,37 +41,10 @@
         <url>git@github.com:vhromada/Validation.git</url>
     </scm>
 
-    <dependencies>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-beans</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>javax.validation</groupId>
-            <artifactId>validation-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-context</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.hibernate</groupId>
-            <artifactId>hibernate-validator</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-          <groupId>org.glassfish.web</groupId>
-          <artifactId>el-impl</artifactId>
-          <version>2.2</version>
-          <scope>test</scope>
-        </dependency>
-    </dependencies>
+    <modules>
+        <module>Result</module>
+        <module>JSR 303</module>
+    </modules>
 
     <build>
         <plugins>

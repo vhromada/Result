@@ -62,8 +62,8 @@ public class ResultConverterTest {
         resultConverter = new ResultConverter<>();
         validator = localValidatorFactoryBean;
         bean = new Bean();
-        bean.string = "Value";
-        bean.number = 10;
+        bean.setString("Value");
+        bean.setNumber(10);
     }
 
     /**
@@ -85,7 +85,7 @@ public class ResultConverterTest {
      */
     @Test
     public void convert_IncorrectString() {
-        bean.string = null;
+        bean.setString(null);
         final Set<ConstraintViolation<Bean>> constraintViolations = validator.validate(bean);
 
         final Result<Void> result = resultConverter.convert(constraintViolations);
@@ -102,7 +102,7 @@ public class ResultConverterTest {
      */
     @Test
     public void convert_IncorrectNumber() {
-        bean.number = 1;
+        bean.setNumber(1);
         final Set<ConstraintViolation<Bean>> constraintViolations = validator.validate(bean);
 
         final Result<Void> result = resultConverter.convert(constraintViolations);
@@ -130,6 +130,42 @@ public class ResultConverterTest {
          */
         @Min(value = 5)
         private int number;
+
+        /**
+         * Returns string.
+         *
+         * @return string
+         */
+        public String getString() {
+            return string;
+        }
+
+        /**
+         * Sets a new value to string.
+         *
+         * @param string new value
+         */
+        public void setString(final String string) {
+            this.string = string;
+        }
+
+        /**
+         * Returns number.
+         *
+         * @return number
+         */
+        public int getNumber() {
+            return number;
+        }
+
+        /**
+         * Sets a new value to number.
+         *
+         * @param number new value
+         */
+        public void setNumber(final int number) {
+            this.number = number;
+        }
 
     }
 

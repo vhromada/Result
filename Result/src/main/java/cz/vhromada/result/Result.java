@@ -79,14 +79,14 @@ public class Result<T> {
     /**
      * Adds events.
      *
-     * @param events events
-     * @throws IllegalArgumentException if events are null
-     *                                  or events contains null
+     * @param eventList list of events
+     * @throws IllegalArgumentException if list of events is null
+     *                                  or list of events contains null
      */
-    public void addEvents(final List<Event> events) {
-        Assert.notNull(events, "Events mustn't be null.");
+    public void addEvents(final List<Event> eventList) {
+        Assert.notNull(eventList, "List of events mustn't be null.");
 
-        for (final Event event : events) {
+        for (final Event event : eventList) {
             addEvent(event);
         }
     }
