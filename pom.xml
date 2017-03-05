@@ -13,7 +13,7 @@
     <groupId>cz.vhromada.validation</groupId>
     <artifactId>validation</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
 
     <name>Validation</name>
     <description>Java component for validation</description>

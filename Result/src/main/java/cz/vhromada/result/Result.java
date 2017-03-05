@@ -73,7 +73,7 @@ public class Result<T> {
         Assert.notNull(event, "Event mustn't be null.");
 
         this.events.add(event);
-        this.status = getNewStatus(this.status, event);
+        this.status = getNewStatus(event);
     }
 
     /**
@@ -94,13 +94,13 @@ public class Result<T> {
     /**
      * Returns result with specified data.
      *
-     * @param data data
-     * @param <T>  type of data
+     * @param resultData data
+     * @param <T>        type of data
      * @return result with specified data
      */
-    public static <T> Result<T> of(final T data) {
+    public static <T> Result<T> of(final T resultData) {
         final Result<T> result = new Result<>();
-        result.data = data;
+        result.data = resultData;
 
         return result;
     }
@@ -156,22 +156,42 @@ public class Result<T> {
         return result;
     }
 
-    /**
-     * Returns new status.
-     *
-     * @param status original status
-     * @param event  event
-     * @return new status
-     */
-    private static Status getNewStatus(final Status status, final Event event) {
-        final Status newStatus = Status.getStatus(event.getSeverity());
-
-        return status.ordinal() >= newStatus.ordinal() ? status : newStatus;
-    }
-
     @Override
     public String toString() {
         return String.format("Result [status=%s, data=%s, events=%s]", status, data, events);
+    }
+
+    /**
+     * Returns status for severity.
+     *
+     * @param severity severity
+     * @return status for severity
+     * @throws IllegalArgumentException if status can't be found
+     */
+    private static Status getStatus(final Severity severity) {
+        if (severity == null) {
+            return null;
+        }
+
+        for (final Status status : Status.values()) {
+            if (status.ordinal() == severity.ordinal()) {
+                return status;
+            }
+        }
+
+        throw new IllegalArgumentException("No Status found for Severity " + severity);
+    }
+
+    /**
+     * Returns new status.
+     *
+     * @param event event
+     * @return new status
+     */
+    private Status getNewStatus(final Event event) {
+        final Status newStatus = getStatus(event.getSeverity());
+
+        return status.ordinal() >= newStatus.ordinal() ? status : newStatus;
     }
 
 }

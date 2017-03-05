@@ -21,6 +21,7 @@ import cz.vhromada.result.Severity;
 import cz.vhromada.result.Status;
 import cz.vhromada.validation.severity.Warning;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -62,7 +63,7 @@ public class ResultConverterTest {
         resultConverter = new ResultConverter<>();
         validator = localValidatorFactoryBean;
         bean = new Bean();
-        bean.setString("Value");
+        bean.setText("Value");
         bean.setNumber(10);
     }
 
@@ -81,11 +82,11 @@ public class ResultConverterTest {
     }
 
     /**
-     * Test method for {@link ResultConverter#convert(Collection)} with incorrect string.
+     * Test method for {@link ResultConverter#convert(Collection)} with incorrect text.
      */
     @Test
     public void convert_IncorrectString() {
-        bean.setString(null);
+        bean.setText(null);
         final Set<ConstraintViolation<Bean>> constraintViolations = validator.validate(bean);
 
         final Result<Void> result = resultConverter.convert(constraintViolations);
@@ -120,42 +121,27 @@ public class ResultConverterTest {
     private static final class Bean {
 
         /**
-         * String
+         * Text
          */
         @NotNull(payload = Warning.class)
-        private String string;
+        @SuppressWarnings("unused")
+        private String text;
 
         /**
          * Number
          */
-        @Min(value = 5)
+        @Min(5)
+        @SuppressWarnings("unused")
         private int number;
 
         /**
-         * Returns string.
+         * Sets a new value to text.
          *
-         * @return string
+         * @param text new value
          */
-        public String getString() {
-            return string;
-        }
-
-        /**
-         * Sets a new value to string.
-         *
-         * @param string new value
-         */
-        public void setString(final String string) {
-            this.string = string;
-        }
-
-        /**
-         * Returns number.
-         *
-         * @return number
-         */
-        public int getNumber() {
-            return number;
+        @SuppressFBWarnings("URF_UNREAD_FIELD")
+        void setText(final String text) {
+            this.text = text;
         }
 
         /**
@@ -163,7 +149,8 @@ public class ResultConverterTest {
          *
          * @param number new value
          */
-        public void setNumber(final int number) {
+        @SuppressFBWarnings("URF_UNREAD_FIELD")
+        void setNumber(final int number) {
             this.number = number;
         }
 
