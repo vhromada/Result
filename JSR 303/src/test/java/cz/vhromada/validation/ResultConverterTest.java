@@ -95,7 +95,7 @@ public class ResultConverterTest {
         assertThat(result.getData(), nullValue());
         assertThat(result.getEvents(), notNullValue());
         assertThat(result.getEvents().size(), is(equalTo(1)));
-        assertThat(result.getEvents().get(0), is(equalTo(new Event(Severity.WARN, "stringNotNull", "Value mustn't be null."))));
+        assertThat(result.getEvents().get(0), is(equalTo(new Event(Severity.WARN, "textNotNull", "Value mustn't be null."))));
     }
 
     /**
