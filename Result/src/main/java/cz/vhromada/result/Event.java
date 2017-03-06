@@ -79,13 +79,12 @@ public class Event {
             return true;
         }
 
-        if (obj == null || !(obj instanceof Event)) {
+        if (!(obj instanceof Event)) {
             return false;
         }
 
         final Event event = (Event) obj;
-
-        return severity.equals(event.severity) && key.equals(event.key) && message.equals(event.message);
+        return severity == event.severity && key.equals(event.key) && message.equals(event.message);
     }
 
     @Override

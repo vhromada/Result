@@ -108,10 +108,10 @@ public class ResultTest {
     }
 
     /**
-     * Test method for {@link Result#addEvent(Event)} with null argument.
+     * Test method for {@link Result#addEvent(Event)} with null event.
      */
     @Test(expected = IllegalArgumentException.class)
-    public void addEvent_NullArgument() {
+    public void addEvent_NullEvent() {
         result.addEvent(null);
     }
 
@@ -128,18 +128,18 @@ public class ResultTest {
     }
 
     /**
-     * Test method for {@link Result#addEvents(List)} with null argument.
+     * Test method for {@link Result#addEvents(List)} with null events.
      */
     @Test(expected = IllegalArgumentException.class)
-    public void addEvents_NullArgument() {
+    public void addEvents_NullEvents() {
         result.addEvents(null);
     }
 
     /**
-     * Test method for {@link Result#addEvents(List)} with argument with null.
+     * Test method for {@link Result#addEvents(List)} with events with null.
      */
     @Test(expected = IllegalArgumentException.class)
-    public void addEvents_ArgumentWithNull() {
+    public void addEvents_EventsWithNull() {
         result.addEvents(Arrays.asList(infoEvent, null, errorEvent));
     }
 

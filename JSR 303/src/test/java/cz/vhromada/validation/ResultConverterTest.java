@@ -85,7 +85,7 @@ public class ResultConverterTest {
      * Test method for {@link ResultConverter#convert(Collection)} with incorrect text.
      */
     @Test
-    public void convert_IncorrectString() {
+    public void convert_IncorrectText() {
         bean.setText(null);
         final Set<ConstraintViolation<Bean>> constraintViolations = validator.validate(bean);
 
