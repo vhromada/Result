@@ -1,5 +1,6 @@
 package cz.vhromada.result;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,7 +12,12 @@ import org.springframework.util.Assert;
  * @param <T> type of data
  * @author Vladimir Hromada
  */
-public class Result<T> {
+public class Result<T> implements Serializable {
+
+    /**
+     * SerialVersionUID
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Status

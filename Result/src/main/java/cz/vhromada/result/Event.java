@@ -1,5 +1,6 @@
 package cz.vhromada.result;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 import org.springframework.util.Assert;
@@ -9,7 +10,12 @@ import org.springframework.util.Assert;
  *
  * @author Vladimir Hromada
  */
-public class Event {
+public class Event implements Serializable {
+
+    /**
+     * SerialVersionUID
+     */
+    private static final long serialVersionUID = 1L;
 
     /**
      * Severity
