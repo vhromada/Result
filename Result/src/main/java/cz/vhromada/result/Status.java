@@ -20,6 +20,6 @@ public enum Status {
     /**
      * Error
      */
-    ERROR;
+    ERROR
 
 }
