@@ -7,13 +7,13 @@
     <parent>
         <groupId>cz.vhromada.maven</groupId>
         <artifactId>library</artifactId>
-        <version>1.0.2</version>
+        <version>1.0.3</version>
     </parent>
 
     <groupId>cz.vhromada.validation</groupId>
     <artifactId>validation</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.2</version>
+    <version>1.0.3</version>
 
     <name>Validation</name>
     <description>Java component for validation</description>
@@ -55,18 +55,5 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
