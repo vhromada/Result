@@ -123,16 +123,14 @@ public class ResultConverterTest {
         /**
          * Text
          */
-        @NotNull(payload = Warning.class)
         @SuppressWarnings("unused")
-        private String text;
+        private @NotNull(payload = Warning.class) String text;
 
         /**
          * Number
          */
-        @Min(5)
         @SuppressWarnings("unused")
-        private int number;
+        private @Min(5) int number;
 
         /**
          * Sets a new value to text.
