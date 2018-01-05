@@ -2,6 +2,7 @@ package cz.vhromada.result;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import org.springframework.util.Assert;
@@ -66,7 +67,7 @@ public class Result<T> implements Serializable {
      * @return events
      */
     public List<Event> getEvents() {
-        return events;
+        return Collections.unmodifiableList(events);
     }
 
     /**

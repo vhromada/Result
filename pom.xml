@@ -51,7 +51,7 @@
             <dependency>
                 <groupId>org.glassfish</groupId>
                 <artifactId>javax.el</artifactId>
-                <version>3.0.1-b08</version>
+                <version>3.0.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
