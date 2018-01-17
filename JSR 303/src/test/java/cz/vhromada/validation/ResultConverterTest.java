@@ -1,6 +1,10 @@
 package cz.vhromada.validation;
 
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collection;
 import java.util.Set;
@@ -16,9 +20,8 @@ import cz.vhromada.result.Severity;
 import cz.vhromada.result.Status;
 import cz.vhromada.validation.severity.Warning;
 
-import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
@@ -27,7 +30,7 @@ import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
  *
  * @author Vladimir Hromada
  */
-public class ResultConverterTest {
+class ResultConverterTest {
 
     /**
      * Instance of {@link ResultConverter}
@@ -47,8 +50,8 @@ public class ResultConverterTest {
     /**
      * Initializes converter, validator and bean.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         final ResourceBundleMessageSource resourceBundleMessageSource = new ResourceBundleMessageSource();
         resourceBundleMessageSource.setBasename("messages");
         final LocalValidatorFactoryBean localValidatorFactoryBean = new LocalValidatorFactoryBean();
@@ -66,54 +69,49 @@ public class ResultConverterTest {
      * Test method for {@link ResultConverter#convert(Collection)} with correct data.
      */
     @Test
-    public void convert_CorrectData() {
+    void convert_CorrectData() {
         final Set<ConstraintViolation<Bean>> constraintViolations = validator.validate(bean);
 
         final Result<Void> result = resultConverter.convert(constraintViolations);
 
-        assertSoftly(softly -> {
-            softly.assertThat(result.getStatus()).isEqualTo(Status.OK);
-            softly.assertThat(result.getData()).isNull();
-            softly.assertThat(result.getEvents()).isEmpty();
-        });
+        assertNotNull(result);
+        assertAll(() -> assertEquals(Status.OK, result.getStatus()),
+            () -> assertNull(result.getData()),
+            () -> assertTrue(result.getEvents().isEmpty()));
     }
 
     /**
      * Test method for {@link ResultConverter#convert(Collection)} with incorrect text.
      */
     @Test
-    public void convert_IncorrectText() {
+    void convert_IncorrectText() {
         bean.setText(null);
         final Set<ConstraintViolation<Bean>> constraintViolations = validator.validate(bean);
 
         final Result<Void> result = resultConverter.convert(constraintViolations);
 
-        assertSoftly(softly -> {
-            softly.assertThat(result.getStatus()).isEqualTo(Status.WARN);
-            softly.assertThat(result.getData()).isNull();
-            softly.assertThat(result.getEvents())
-                    .hasSize(1)
-                    .allSatisfy(item -> softly.assertThat(item).isEqualTo(new Event(Severity.WARN, "textNotNull", "Value mustn't be null.")));
-        });
+        assertNotNull(result);
+        assertAll(() -> assertEquals(Status.WARN, result.getStatus()),
+            () -> assertNull(result.getData()),
+            () -> assertEquals(1, result.getEvents().size()),
+            () -> assertEquals(new Event(Severity.WARN, "textNotNull", "Value mustn't be null."), result.getEvents().get(0)));
     }
 
     /**
      * Test method for {@link ResultConverter#convert(Collection)} with incorrect number.
      */
     @Test
-    public void convert_IncorrectNumber() {
+    void convert_IncorrectNumber() {
         bean.setNumber(1);
         final Set<ConstraintViolation<Bean>> constraintViolations = validator.validate(bean);
 
         final Result<Void> result = resultConverter.convert(constraintViolations);
 
-        assertSoftly(softly -> {
-            softly.assertThat(result.getStatus()).isEqualTo(Status.ERROR);
-            softly.assertThat(result.getData()).isNull();
-            softly.assertThat(result.getEvents())
-                    .hasSize(1)
-                    .allSatisfy(item -> softly.assertThat(item).isEqualTo(new Event(Severity.ERROR, "numberMin", "Value must be greater than 5.")));
-        });
+        assertNotNull(result);
+        assertAll(() -> assertEquals(Status.ERROR, result.getStatus()),
+            () -> assertNull(result.getData()),
+            () -> assertEquals(1, result.getEvents().size()),
+            () -> assertEquals(new Event(Severity.ERROR, "numberMin", "Value must be greater than 5."), result.getEvents().get(0)));
     }
 
     /**
@@ -138,7 +136,6 @@ public class ResultConverterTest {
          *
          * @param text new value
          */
-        @SuppressFBWarnings("URF_UNREAD_FIELD")
         void setText(final String text) {
             this.text = text;
         }
@@ -148,7 +145,6 @@ public class ResultConverterTest {
          *
          * @param number new value
          */
-        @SuppressFBWarnings("URF_UNREAD_FIELD")
         void setNumber(final int number) {
             this.number = number;
         }

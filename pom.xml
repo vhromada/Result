@@ -49,6 +49,11 @@
     <dependencyManagement>
         <dependencies>
             <dependency>
+                <groupId>cz.vhromada.test</groupId>
+                <artifactId>mockito-jupiter</artifactId>
+                <version>1.0.0-SNAPSHOT</version>
+            </dependency>
+            <dependency>
                 <groupId>org.glassfish</groupId>
                 <artifactId>javax.el</artifactId>
                 <version>3.0.0</version>

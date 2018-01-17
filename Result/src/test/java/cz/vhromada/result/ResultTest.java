@@ -1,21 +1,24 @@
 package cz.vhromada.result;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.SoftAssertions.assertSoftly;
+import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 /**
  * A class represents test for class {@link Result}.
  *
  * @author Vladimir Hromada
  */
-public class ResultTest {
+class ResultTest {
 
     /**
      * Data
@@ -55,8 +58,8 @@ public class ResultTest {
     /**
      * Initializes result and events.
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         result = new Result<>();
         infoEvent = new Event(Severity.INFO, KEY, MESSAGE);
         warnEvent = new Event(Severity.WARN, KEY, MESSAGE);
@@ -67,196 +70,174 @@ public class ResultTest {
      * Test method for {@link Result#addEvent(Event)}.
      */
     @Test
-    public void addEvent() {
+    void addEvent() {
         result.addEvent(infoEvent);
 
-        assertSoftly(softly -> {
-            softly.assertThat(result.getStatus()).isEqualTo(Status.OK);
-            softly.assertThat(result.getData()).isNull();
-            softly.assertThat(result.getEvents()).isEqualTo(Collections.singletonList(infoEvent));
-        });
+        assertAll(() -> assertEquals(Status.OK, result.getStatus()),
+            () -> assertNull(result.getData()),
+            () -> assertEquals(Collections.singletonList(infoEvent), result.getEvents()));
 
         result.addEvent(warnEvent);
 
-        assertSoftly(softly -> {
-            softly.assertThat(result.getStatus()).isEqualTo(Status.WARN);
-            softly.assertThat(result.getData()).isNull();
-            softly.assertThat(result.getEvents()).isEqualTo(Arrays.asList(infoEvent, warnEvent));
-        });
+        assertAll(() -> assertEquals(Status.WARN, result.getStatus()),
+            () -> assertNull(result.getData()),
+            () -> assertEquals(Arrays.asList(infoEvent, warnEvent), result.getEvents()));
 
         result.addEvent(infoEvent);
 
-        assertSoftly(softly -> {
-            softly.assertThat(result.getStatus()).isEqualTo(Status.WARN);
-            softly.assertThat(result.getData()).isNull();
-            softly.assertThat(result.getEvents()).isEqualTo(Arrays.asList(infoEvent, warnEvent, infoEvent));
-        });
+        assertAll(() -> assertEquals(Status.WARN, result.getStatus()),
+            () -> assertNull(result.getData()),
+            () -> assertEquals(Arrays.asList(infoEvent, warnEvent, infoEvent), result.getEvents()));
 
         result.addEvent(errorEvent);
 
-        assertSoftly(softly -> {
-            softly.assertThat(result.getStatus()).isEqualTo(Status.ERROR);
-            softly.assertThat(result.getData()).isNull();
-            softly.assertThat(result.getEvents()).isEqualTo(Arrays.asList(infoEvent, warnEvent, infoEvent, errorEvent));
-        });
+        assertAll(() -> assertEquals(Status.ERROR, result.getStatus()),
+            () -> assertNull(result.getData()),
+            () -> assertEquals(Arrays.asList(infoEvent, warnEvent, infoEvent, errorEvent), result.getEvents()));
 
         result.addEvent(infoEvent);
 
-        assertSoftly(softly -> {
-            softly.assertThat(result.getStatus()).isEqualTo(Status.ERROR);
-            softly.assertThat(result.getData()).isNull();
-            softly.assertThat(result.getEvents()).isEqualTo(Arrays.asList(infoEvent, warnEvent, infoEvent, errorEvent, infoEvent));
-        });
+        assertAll(() -> assertEquals(Status.ERROR, result.getStatus()),
+            () -> assertNull(result.getData()),
+            () -> assertEquals(Arrays.asList(infoEvent, warnEvent, infoEvent, errorEvent, infoEvent), result.getEvents()));
 
         result.addEvent(warnEvent);
 
-        assertSoftly(softly -> {
-            softly.assertThat(result.getStatus()).isEqualTo(Status.ERROR);
-            softly.assertThat(result.getData()).isNull();
-            softly.assertThat(result.getEvents()).isEqualTo(Arrays.asList(infoEvent, warnEvent, infoEvent, errorEvent, infoEvent, warnEvent));
-        });
+        assertAll(() -> assertEquals(Status.ERROR, result.getStatus()),
+            () -> assertNull(result.getData()),
+            () -> assertEquals(Arrays.asList(infoEvent, warnEvent, infoEvent, errorEvent, infoEvent, warnEvent), result.getEvents()));
     }
 
     /**
      * Test method for {@link Result#addEvent(Event)} with null event.
      */
     @Test
-    public void addEvent_NullEvent() {
-        assertThatThrownBy(() -> result.addEvent(null)).isInstanceOf(IllegalArgumentException.class);
+    void addEvent_NullEvent() {
+        assertThrows(IllegalArgumentException.class, () -> result.addEvent(null));
     }
 
     /**
      * Test method for {@link Result#addEvents(List)}.
      */
     @Test
-    public void addEvents() {
+    void addEvents() {
         result.addEvents(Arrays.asList(infoEvent, warnEvent, errorEvent));
 
-        assertSoftly(softly -> {
-            softly.assertThat(result.getStatus()).isEqualTo(Status.ERROR);
-            softly.assertThat(result.getData()).isNull();
-            softly.assertThat(result.getEvents()).isEqualTo(Arrays.asList(infoEvent, warnEvent, errorEvent));
-        });
+        assertAll(() -> assertEquals(Status.ERROR, result.getStatus()),
+            () -> assertNull(result.getData()),
+            () -> assertEquals(Arrays.asList(infoEvent, warnEvent, errorEvent), result.getEvents()));
     }
 
     /**
      * Test method for {@link Result#addEvents(List)} with null events.
      */
     @Test
-    public void addEvents_NullEvents() {
-        assertThatThrownBy(() -> result.addEvents(null)).isInstanceOf(IllegalArgumentException.class);
+    void addEvents_NullEvents() {
+        assertThrows(IllegalArgumentException.class, () -> result.addEvents(null));
     }
 
     /**
      * Test method for {@link Result#addEvents(List)} with events with null.
      */
     @Test
-    public void addEvents_EventsWithNull() {
-        assertThatThrownBy(() -> result.addEvents(Arrays.asList(infoEvent, null, errorEvent))).isInstanceOf(IllegalArgumentException.class);
+    void addEvents_EventsWithNull() {
+        assertThrows(IllegalArgumentException.class, () -> result.addEvents(Arrays.asList(infoEvent, null, errorEvent)));
     }
 
     /**
      * Test method for {@link Result#of(Object)}.
      */
     @Test
-    public void of() {
+    void of() {
         final Result<String> stringResult = Result.of(DATA);
 
-        assertSoftly(softly -> {
-            softly.assertThat(stringResult.getStatus()).isEqualTo(Status.OK);
-            softly.assertThat(stringResult.getData()).isEqualTo(DATA);
-            softly.assertThat(stringResult.getEvents()).isEmpty();
-        });
+        assertAll(() -> assertEquals(Status.OK, stringResult.getStatus()),
+            () -> assertEquals(DATA, stringResult.getData()),
+            () -> assertTrue(stringResult.getEvents().isEmpty()));
     }
 
     /**
      * Test method for {@link Result#info(String, String)}.
      */
     @Test
-    public void info() {
+    void info() {
         final Result<String> infoResult = Result.info(KEY, MESSAGE);
 
-        assertSoftly(softly -> {
-            softly.assertThat(infoResult.getStatus()).isEqualTo(Status.OK);
-            softly.assertThat(infoResult.getData()).isNull();
-            softly.assertThat(infoResult.getEvents()).isEqualTo(Collections.singletonList(infoEvent));
-        });
+        assertAll(() -> assertEquals(Status.OK, infoResult.getStatus()),
+            () -> assertNull(infoResult.getData()),
+            () -> assertEquals(Collections.singletonList(infoEvent), infoResult.getEvents()));
     }
 
     /**
      * Test method for {@link Result#info(String, String)} with null key.
      */
     @Test
-    public void info_NullKey() {
-        assertThatThrownBy(() -> Result.info(null, MESSAGE)).isInstanceOf(IllegalArgumentException.class);
+    void info_NullKey() {
+        assertThrows(IllegalArgumentException.class, () -> Result.info(null, MESSAGE));
     }
 
     /**
      * Test method for {@link Result#info(String, String)} with null message.
      */
     @Test
-    public void info_NullMessage() {
-        assertThatThrownBy(() -> Result.info(KEY, null)).isInstanceOf(IllegalArgumentException.class);
+    void info_NullMessage() {
+        assertThrows(IllegalArgumentException.class, () -> Result.info(KEY, null));
     }
 
     /**
      * Test method for {@link Result#warn(String, String)}.
      */
     @Test
-    public void warn() {
+    void warn() {
         final Result<String> warnResult = Result.warn(KEY, MESSAGE);
 
-        assertSoftly(softly -> {
-            softly.assertThat(warnResult.getStatus()).isEqualTo(Status.WARN);
-            softly.assertThat(warnResult.getData()).isNull();
-            softly.assertThat(warnResult.getEvents()).isEqualTo(Collections.singletonList(warnEvent));
-        });
+        assertAll(() -> assertEquals(Status.WARN, warnResult.getStatus()),
+            () -> assertNull(warnResult.getData()),
+            () -> assertEquals(Collections.singletonList(warnEvent), warnResult.getEvents()));
     }
 
     /**
      * Test method for {@link Result#warn(String, String)} with null key.
      */
     @Test
-    public void warn_NullKey() {
-        assertThatThrownBy(() -> Result.warn(null, MESSAGE)).isInstanceOf(IllegalArgumentException.class);
+    void warn_NullKey() {
+        assertThrows(IllegalArgumentException.class, () -> Result.warn(null, MESSAGE));
     }
 
     /**
      * Test method for {@link Result#warn(String, String)} with null message.
      */
     @Test
-    public void warn_NullMessage() {
-        assertThatThrownBy(() -> Result.warn(KEY, null)).isInstanceOf(IllegalArgumentException.class);
+    void warn_NullMessage() {
+        assertThrows(IllegalArgumentException.class, () -> Result.warn(KEY, null));
     }
 
     /**
      * Test method for {@link Result#error(String, String)}.
      */
     @Test
-    public void error() {
+    void error() {
         final Result<String> errorResult = Result.error(KEY, MESSAGE);
 
-        assertSoftly(softly -> {
-            softly.assertThat(errorResult.getStatus()).isEqualTo(Status.ERROR);
-            softly.assertThat(errorResult.getData()).isNull();
-            softly.assertThat(errorResult.getEvents()).isEqualTo(Collections.singletonList(errorEvent));
-        });
+        assertAll(() -> assertEquals(Status.ERROR, errorResult.getStatus()),
+            () -> assertNull(errorResult.getData()),
+            () -> assertEquals(Collections.singletonList(errorEvent), errorResult.getEvents()));
     }
 
     /**
      * Test method for {@link Result#error(String, String)} with null key.
      */
     @Test
-    public void error_NullKey() {
-        assertThatThrownBy(() -> Result.error(null, MESSAGE)).isInstanceOf(IllegalArgumentException.class);
+    void error_NullKey() {
+        assertThrows(IllegalArgumentException.class, () -> Result.error(null, MESSAGE));
     }
 
     /**
      * Test method for {@link Result#error(String, String)} with null message.
      */
     @Test
-    public void error_NullMessage() {
-        assertThatThrownBy(() -> Result.error(KEY, null)).isInstanceOf(IllegalArgumentException.class);
+    void error_NullMessage() {
+        assertThrows(IllegalArgumentException.class, () -> Result.error(KEY, null));
     }
 
 }
