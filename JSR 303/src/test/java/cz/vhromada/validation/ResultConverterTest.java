@@ -75,9 +75,11 @@ class ResultConverterTest {
         final Result<Void> result = resultConverter.convert(constraintViolations);
 
         assertNotNull(result);
-        assertAll(() -> assertEquals(Status.OK, result.getStatus()),
+        assertAll(
+            () -> assertEquals(Status.OK, result.getStatus()),
             () -> assertNull(result.getData()),
-            () -> assertTrue(result.getEvents().isEmpty()));
+            () -> assertTrue(result.getEvents().isEmpty())
+        );
     }
 
     /**
@@ -91,10 +93,12 @@ class ResultConverterTest {
         final Result<Void> result = resultConverter.convert(constraintViolations);
 
         assertNotNull(result);
-        assertAll(() -> assertEquals(Status.WARN, result.getStatus()),
+        assertAll(
+            () -> assertEquals(Status.WARN, result.getStatus()),
             () -> assertNull(result.getData()),
             () -> assertEquals(1, result.getEvents().size()),
-            () -> assertEquals(new Event(Severity.WARN, "textNotNull", "Value mustn't be null."), result.getEvents().get(0)));
+            () -> assertEquals(new Event(Severity.WARN, "textNotNull", "Value mustn't be null."), result.getEvents().get(0))
+        );
     }
 
     /**
@@ -108,10 +112,12 @@ class ResultConverterTest {
         final Result<Void> result = resultConverter.convert(constraintViolations);
 
         assertNotNull(result);
-        assertAll(() -> assertEquals(Status.ERROR, result.getStatus()),
+        assertAll(
+            () -> assertEquals(Status.ERROR, result.getStatus()),
             () -> assertNull(result.getData()),
             () -> assertEquals(1, result.getEvents().size()),
-            () -> assertEquals(new Event(Severity.ERROR, "numberMin", "Value must be greater than 5."), result.getEvents().get(0)));
+            () -> assertEquals(new Event(Severity.ERROR, "numberMin", "Value must be greater than 5."), result.getEvents().get(0))
+        );
     }
 
     /**

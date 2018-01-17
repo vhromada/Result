@@ -73,39 +73,51 @@ class ResultTest {
     void addEvent() {
         result.addEvent(infoEvent);
 
-        assertAll(() -> assertEquals(Status.OK, result.getStatus()),
+        assertAll(
+            () -> assertEquals(Status.OK, result.getStatus()),
             () -> assertNull(result.getData()),
-            () -> assertEquals(Collections.singletonList(infoEvent), result.getEvents()));
+            () -> assertEquals(Collections.singletonList(infoEvent), result.getEvents())
+        );
 
         result.addEvent(warnEvent);
 
-        assertAll(() -> assertEquals(Status.WARN, result.getStatus()),
+        assertAll(
+            () -> assertEquals(Status.WARN, result.getStatus()),
             () -> assertNull(result.getData()),
-            () -> assertEquals(Arrays.asList(infoEvent, warnEvent), result.getEvents()));
+            () -> assertEquals(Arrays.asList(infoEvent, warnEvent), result.getEvents())
+        );
 
         result.addEvent(infoEvent);
 
-        assertAll(() -> assertEquals(Status.WARN, result.getStatus()),
+        assertAll(
+            () -> assertEquals(Status.WARN, result.getStatus()),
             () -> assertNull(result.getData()),
-            () -> assertEquals(Arrays.asList(infoEvent, warnEvent, infoEvent), result.getEvents()));
+            () -> assertEquals(Arrays.asList(infoEvent, warnEvent, infoEvent), result.getEvents())
+        );
 
         result.addEvent(errorEvent);
 
-        assertAll(() -> assertEquals(Status.ERROR, result.getStatus()),
+        assertAll(
+            () -> assertEquals(Status.ERROR, result.getStatus()),
             () -> assertNull(result.getData()),
-            () -> assertEquals(Arrays.asList(infoEvent, warnEvent, infoEvent, errorEvent), result.getEvents()));
+            () -> assertEquals(Arrays.asList(infoEvent, warnEvent, infoEvent, errorEvent), result.getEvents())
+        );
 
         result.addEvent(infoEvent);
 
-        assertAll(() -> assertEquals(Status.ERROR, result.getStatus()),
+        assertAll(
+            () -> assertEquals(Status.ERROR, result.getStatus()),
             () -> assertNull(result.getData()),
-            () -> assertEquals(Arrays.asList(infoEvent, warnEvent, infoEvent, errorEvent, infoEvent), result.getEvents()));
+            () -> assertEquals(Arrays.asList(infoEvent, warnEvent, infoEvent, errorEvent, infoEvent), result.getEvents())
+        );
 
         result.addEvent(warnEvent);
 
-        assertAll(() -> assertEquals(Status.ERROR, result.getStatus()),
+        assertAll(
+            () -> assertEquals(Status.ERROR, result.getStatus()),
             () -> assertNull(result.getData()),
-            () -> assertEquals(Arrays.asList(infoEvent, warnEvent, infoEvent, errorEvent, infoEvent, warnEvent), result.getEvents()));
+            () -> assertEquals(Arrays.asList(infoEvent, warnEvent, infoEvent, errorEvent, infoEvent, warnEvent), result.getEvents())
+        );
     }
 
     /**
@@ -123,9 +135,11 @@ class ResultTest {
     void addEvents() {
         result.addEvents(Arrays.asList(infoEvent, warnEvent, errorEvent));
 
-        assertAll(() -> assertEquals(Status.ERROR, result.getStatus()),
+        assertAll(
+            () -> assertEquals(Status.ERROR, result.getStatus()),
             () -> assertNull(result.getData()),
-            () -> assertEquals(Arrays.asList(infoEvent, warnEvent, errorEvent), result.getEvents()));
+            () -> assertEquals(Arrays.asList(infoEvent, warnEvent, errorEvent), result.getEvents())
+        );
     }
 
     /**
@@ -151,9 +165,11 @@ class ResultTest {
     void of() {
         final Result<String> stringResult = Result.of(DATA);
 
-        assertAll(() -> assertEquals(Status.OK, stringResult.getStatus()),
+        assertAll(
+            () -> assertEquals(Status.OK, stringResult.getStatus()),
             () -> assertEquals(DATA, stringResult.getData()),
-            () -> assertTrue(stringResult.getEvents().isEmpty()));
+            () -> assertTrue(stringResult.getEvents().isEmpty())
+        );
     }
 
     /**
@@ -163,9 +179,11 @@ class ResultTest {
     void info() {
         final Result<String> infoResult = Result.info(KEY, MESSAGE);
 
-        assertAll(() -> assertEquals(Status.OK, infoResult.getStatus()),
+        assertAll(
+            () -> assertEquals(Status.OK, infoResult.getStatus()),
             () -> assertNull(infoResult.getData()),
-            () -> assertEquals(Collections.singletonList(infoEvent), infoResult.getEvents()));
+            () -> assertEquals(Collections.singletonList(infoEvent), infoResult.getEvents())
+        );
     }
 
     /**
@@ -191,9 +209,11 @@ class ResultTest {
     void warn() {
         final Result<String> warnResult = Result.warn(KEY, MESSAGE);
 
-        assertAll(() -> assertEquals(Status.WARN, warnResult.getStatus()),
+        assertAll(
+            () -> assertEquals(Status.WARN, warnResult.getStatus()),
             () -> assertNull(warnResult.getData()),
-            () -> assertEquals(Collections.singletonList(warnEvent), warnResult.getEvents()));
+            () -> assertEquals(Collections.singletonList(warnEvent), warnResult.getEvents())
+        );
     }
 
     /**
@@ -219,9 +239,11 @@ class ResultTest {
     void error() {
         final Result<String> errorResult = Result.error(KEY, MESSAGE);
 
-        assertAll(() -> assertEquals(Status.ERROR, errorResult.getStatus()),
+        assertAll(
+            () -> assertEquals(Status.ERROR, errorResult.getStatus()),
             () -> assertNull(errorResult.getData()),
-            () -> assertEquals(Collections.singletonList(errorEvent), errorResult.getEvents()));
+            () -> assertEquals(Collections.singletonList(errorEvent), errorResult.getEvents())
+        );
     }
 
     /**
