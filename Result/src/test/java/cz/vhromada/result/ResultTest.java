@@ -1,10 +1,7 @@
 package cz.vhromada.result;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -73,51 +70,51 @@ class ResultTest {
     void addEvent() {
         result.addEvent(infoEvent);
 
-        assertAll(
-            () -> assertEquals(Status.OK, result.getStatus()),
-            () -> assertNull(result.getData()),
-            () -> assertEquals(Collections.singletonList(infoEvent), result.getEvents())
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(result.getStatus()).isEqualTo(Status.OK);
+            softly.assertThat(result.getData()).isNull();
+            softly.assertThat(result.getEvents()).isEqualTo(Collections.singletonList(infoEvent));
+        });
 
         result.addEvent(warnEvent);
 
-        assertAll(
-            () -> assertEquals(Status.WARN, result.getStatus()),
-            () -> assertNull(result.getData()),
-            () -> assertEquals(Arrays.asList(infoEvent, warnEvent), result.getEvents())
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(result.getStatus()).isEqualTo(Status.WARN);
+            softly.assertThat(result.getData()).isNull();
+            softly.assertThat(result.getEvents()).isEqualTo(Arrays.asList(infoEvent, warnEvent));
+        });
 
         result.addEvent(infoEvent);
 
-        assertAll(
-            () -> assertEquals(Status.WARN, result.getStatus()),
-            () -> assertNull(result.getData()),
-            () -> assertEquals(Arrays.asList(infoEvent, warnEvent, infoEvent), result.getEvents())
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(result.getStatus()).isEqualTo(Status.WARN);
+            softly.assertThat(result.getData()).isNull();
+            softly.assertThat(result.getEvents()).isEqualTo(Arrays.asList(infoEvent, warnEvent, infoEvent));
+        });
 
         result.addEvent(errorEvent);
 
-        assertAll(
-            () -> assertEquals(Status.ERROR, result.getStatus()),
-            () -> assertNull(result.getData()),
-            () -> assertEquals(Arrays.asList(infoEvent, warnEvent, infoEvent, errorEvent), result.getEvents())
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(result.getStatus()).isEqualTo(Status.ERROR);
+            softly.assertThat(result.getData()).isNull();
+            softly.assertThat(result.getEvents()).isEqualTo(Arrays.asList(infoEvent, warnEvent, infoEvent, errorEvent));
+        });
 
         result.addEvent(infoEvent);
 
-        assertAll(
-            () -> assertEquals(Status.ERROR, result.getStatus()),
-            () -> assertNull(result.getData()),
-            () -> assertEquals(Arrays.asList(infoEvent, warnEvent, infoEvent, errorEvent, infoEvent), result.getEvents())
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(result.getStatus()).isEqualTo(Status.ERROR);
+            softly.assertThat(result.getData()).isNull();
+            softly.assertThat(result.getEvents()).isEqualTo(Arrays.asList(infoEvent, warnEvent, infoEvent, errorEvent, infoEvent));
+        });
 
         result.addEvent(warnEvent);
 
-        assertAll(
-            () -> assertEquals(Status.ERROR, result.getStatus()),
-            () -> assertNull(result.getData()),
-            () -> assertEquals(Arrays.asList(infoEvent, warnEvent, infoEvent, errorEvent, infoEvent, warnEvent), result.getEvents())
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(result.getStatus()).isEqualTo(Status.ERROR);
+            softly.assertThat(result.getData()).isNull();
+            softly.assertThat(result.getEvents()).isEqualTo(Arrays.asList(infoEvent, warnEvent, infoEvent, errorEvent, infoEvent, warnEvent));
+        });
     }
 
     /**
@@ -125,7 +122,7 @@ class ResultTest {
      */
     @Test
     void addEvent_NullEvent() {
-        assertThrows(IllegalArgumentException.class, () -> result.addEvent(null));
+        assertThatThrownBy(() -> result.addEvent(null)).isInstanceOf(IllegalArgumentException.class);
     }
 
     /**
@@ -135,11 +132,11 @@ class ResultTest {
     void addEvents() {
         result.addEvents(Arrays.asList(infoEvent, warnEvent, errorEvent));
 
-        assertAll(
-            () -> assertEquals(Status.ERROR, result.getStatus()),
-            () -> assertNull(result.getData()),
-            () -> assertEquals(Arrays.asList(infoEvent, warnEvent, errorEvent), result.getEvents())
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(result.getStatus()).isEqualTo(Status.ERROR);
+            softly.assertThat(result.getData()).isNull();
+            softly.assertThat(result.getEvents()).isEqualTo(Arrays.asList(infoEvent, warnEvent, errorEvent));
+        });
     }
 
     /**
@@ -147,7 +144,7 @@ class ResultTest {
      */
     @Test
     void addEvents_NullEvents() {
-        assertThrows(IllegalArgumentException.class, () -> result.addEvents(null));
+        assertThatThrownBy(() -> result.addEvents(null)).isInstanceOf(IllegalArgumentException.class);
     }
 
     /**
@@ -155,7 +152,7 @@ class ResultTest {
      */
     @Test
     void addEvents_EventsWithNull() {
-        assertThrows(IllegalArgumentException.class, () -> result.addEvents(Arrays.asList(infoEvent, null, errorEvent)));
+        assertThatThrownBy(() -> result.addEvents(Arrays.asList(infoEvent, null, errorEvent))).isInstanceOf(IllegalArgumentException.class);
     }
 
     /**
@@ -165,11 +162,11 @@ class ResultTest {
     void of() {
         final Result<String> stringResult = Result.of(DATA);
 
-        assertAll(
-            () -> assertEquals(Status.OK, stringResult.getStatus()),
-            () -> assertEquals(DATA, stringResult.getData()),
-            () -> assertTrue(stringResult.getEvents().isEmpty())
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(stringResult.getStatus()).isEqualTo(Status.OK);
+            softly.assertThat(stringResult.getData()).isEqualTo(DATA);
+            softly.assertThat(stringResult.getEvents()).isEmpty();
+        });
     }
 
     /**
@@ -179,11 +176,11 @@ class ResultTest {
     void info() {
         final Result<String> infoResult = Result.info(KEY, MESSAGE);
 
-        assertAll(
-            () -> assertEquals(Status.OK, infoResult.getStatus()),
-            () -> assertNull(infoResult.getData()),
-            () -> assertEquals(Collections.singletonList(infoEvent), infoResult.getEvents())
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(infoResult.getStatus()).isEqualTo(Status.OK);
+            softly.assertThat(infoResult.getData()).isNull();
+            softly.assertThat(infoResult.getEvents()).isEqualTo(Collections.singletonList(infoEvent));
+        });
     }
 
     /**
@@ -191,7 +188,7 @@ class ResultTest {
      */
     @Test
     void info_NullKey() {
-        assertThrows(IllegalArgumentException.class, () -> Result.info(null, MESSAGE));
+        assertThatThrownBy(() -> Result.info(null, MESSAGE)).isInstanceOf(IllegalArgumentException.class);
     }
 
     /**
@@ -199,7 +196,7 @@ class ResultTest {
      */
     @Test
     void info_NullMessage() {
-        assertThrows(IllegalArgumentException.class, () -> Result.info(KEY, null));
+        assertThatThrownBy(() -> Result.info(KEY, null)).isInstanceOf(IllegalArgumentException.class);
     }
 
     /**
@@ -209,11 +206,11 @@ class ResultTest {
     void warn() {
         final Result<String> warnResult = Result.warn(KEY, MESSAGE);
 
-        assertAll(
-            () -> assertEquals(Status.WARN, warnResult.getStatus()),
-            () -> assertNull(warnResult.getData()),
-            () -> assertEquals(Collections.singletonList(warnEvent), warnResult.getEvents())
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(warnResult.getStatus()).isEqualTo(Status.WARN);
+            softly.assertThat(warnResult.getData()).isNull();
+            softly.assertThat(warnResult.getEvents()).isEqualTo(Collections.singletonList(warnEvent));
+        });
     }
 
     /**
@@ -221,7 +218,7 @@ class ResultTest {
      */
     @Test
     void warn_NullKey() {
-        assertThrows(IllegalArgumentException.class, () -> Result.warn(null, MESSAGE));
+        assertThatThrownBy(() -> Result.warn(null, MESSAGE)).isInstanceOf(IllegalArgumentException.class);
     }
 
     /**
@@ -229,7 +226,7 @@ class ResultTest {
      */
     @Test
     void warn_NullMessage() {
-        assertThrows(IllegalArgumentException.class, () -> Result.warn(KEY, null));
+        assertThatThrownBy(() -> Result.warn(KEY, null)).isInstanceOf(IllegalArgumentException.class);
     }
 
     /**
@@ -239,11 +236,11 @@ class ResultTest {
     void error() {
         final Result<String> errorResult = Result.error(KEY, MESSAGE);
 
-        assertAll(
-            () -> assertEquals(Status.ERROR, errorResult.getStatus()),
-            () -> assertNull(errorResult.getData()),
-            () -> assertEquals(Collections.singletonList(errorEvent), errorResult.getEvents())
-        );
+        assertSoftly(softly -> {
+            softly.assertThat(errorResult.getStatus()).isEqualTo(Status.ERROR);
+            softly.assertThat(errorResult.getData()).isNull();
+            softly.assertThat(errorResult.getEvents()).isEqualTo(Collections.singletonList(errorEvent));
+        });
     }
 
     /**
@@ -251,7 +248,7 @@ class ResultTest {
      */
     @Test
     void error_NullKey() {
-        assertThrows(IllegalArgumentException.class, () -> Result.error(null, MESSAGE));
+        assertThatThrownBy(() -> Result.error(null, MESSAGE)).isInstanceOf(IllegalArgumentException.class);
     }
 
     /**
@@ -259,7 +256,7 @@ class ResultTest {
      */
     @Test
     void error_NullMessage() {
-        assertThrows(IllegalArgumentException.class, () -> Result.error(KEY, null));
+        assertThatThrownBy(() -> Result.error(KEY, null)).isInstanceOf(IllegalArgumentException.class);
     }
 
 }

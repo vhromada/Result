@@ -1,12 +1,10 @@
 package cz.vhromada.validation;
 
-import static org.junit.jupiter.api.Assertions.assertAll;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.SoftAssertions.assertSoftly;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
 import javax.validation.ConstraintViolation;
@@ -74,12 +72,12 @@ class ResultConverterTest {
 
         final Result<Void> result = resultConverter.convert(constraintViolations);
 
-        assertNotNull(result);
-        assertAll(
-            () -> assertEquals(Status.OK, result.getStatus()),
-            () -> assertNull(result.getData()),
-            () -> assertTrue(result.getEvents().isEmpty())
-        );
+        assertThat(result).isNotNull();
+        assertSoftly(softly -> {
+            softly.assertThat(result.getStatus()).isEqualTo(Status.OK);
+            softly.assertThat(result.getData()).isNull();
+            softly.assertThat(result.getEvents()).isEmpty();
+        });
     }
 
     /**
@@ -92,13 +90,12 @@ class ResultConverterTest {
 
         final Result<Void> result = resultConverter.convert(constraintViolations);
 
-        assertNotNull(result);
-        assertAll(
-            () -> assertEquals(Status.WARN, result.getStatus()),
-            () -> assertNull(result.getData()),
-            () -> assertEquals(1, result.getEvents().size()),
-            () -> assertEquals(new Event(Severity.WARN, "textNotNull", "Value mustn't be null."), result.getEvents().get(0))
-        );
+        assertThat(result).isNotNull();
+        assertSoftly(softly -> {
+            softly.assertThat(result.getStatus()).isEqualTo(Status.WARN);
+            softly.assertThat(result.getData()).isNull();
+            softly.assertThat(result.getEvents()).isEqualTo(Collections.singletonList(new Event(Severity.WARN, "textNotNull", "Value mustn't be null.")));
+        });
     }
 
     /**
@@ -111,13 +108,12 @@ class ResultConverterTest {
 
         final Result<Void> result = resultConverter.convert(constraintViolations);
 
-        assertNotNull(result);
-        assertAll(
-            () -> assertEquals(Status.ERROR, result.getStatus()),
-            () -> assertNull(result.getData()),
-            () -> assertEquals(1, result.getEvents().size()),
-            () -> assertEquals(new Event(Severity.ERROR, "numberMin", "Value must be greater than 5."), result.getEvents().get(0))
-        );
+        assertThat(result).isNotNull();
+        assertSoftly(softly -> {
+            softly.assertThat(result.getStatus()).isEqualTo(Status.ERROR);
+            softly.assertThat(result.getData()).isNull();
+            softly.assertThat(result.getEvents()).isEqualTo(Collections.singletonList(new Event(Severity.ERROR, "numberMin", "Value must be greater than 5.")));
+        });
     }
 
     /**
