@@ -201,15 +201,4 @@ public class Result<T> implements Serializable {
         return status.ordinal() >= newStatus.ordinal() ? status : newStatus;
     }
 
-    public void setStatus(final Status status) {
-        this.status = status;
-    }
-
-    public void setData(final T data) {
-        this.data = data;
-    }
-
-    public void setEvents(final List<Event> events) {
-        this.events = events;
-    }
 }
