@@ -1,11 +1,10 @@
-package cz.vhromada.result;
+package cz.vhromada.validation.result;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import org.springframework.util.Assert;
 
 /**
  * A class represents result.
@@ -44,6 +43,67 @@ public class Result<T> implements Serializable {
     }
 
     /**
+     * Returns result with specified data.
+     *
+     * @param resultData data
+     * @param <T>        type of data
+     * @return result with specified data
+     */
+    public static <T> Result<T> of(final T resultData) {
+        final Result<T> result = new Result<>();
+        result.data = resultData;
+        return result;
+    }
+
+    /**
+     * Returns result with specified information message.
+     *
+     * @param key     key
+     * @param message message
+     * @param <T>     type of data
+     * @return result with specified information message
+     * @throws IllegalArgumentException if key is null
+     *                                  or value is null
+     */
+    public static <T> Result<T> info(final String key, final String message) {
+        final Result<T> result = new Result<>();
+        result.addEvent(new Event(Severity.INFO, key, message));
+        return result;
+    }
+
+    /**
+     * Returns result with specified warning message.
+     *
+     * @param key     key
+     * @param message message
+     * @param <T>     type of data
+     * @return result with specified warning message
+     * @throws IllegalArgumentException if key is null
+     *                                  or value is null
+     */
+    public static <T> Result<T> warn(final String key, final String message) {
+        final Result<T> result = new Result<>();
+        result.addEvent(new Event(Severity.WARN, key, message));
+        return result;
+    }
+
+    /**
+     * Returns result with specified error message.
+     *
+     * @param key     key
+     * @param message message
+     * @param <T>     type of data
+     * @return result with specified error message
+     * @throws IllegalArgumentException if key is null
+     *                                  or value is null
+     */
+    public static <T> Result<T> error(final String key, final String message) {
+        final Result<T> result = new Result<>();
+        result.addEvent(new Event(Severity.ERROR, key, message));
+        return result;
+    }
+
+    /**
      * Returns status.
      *
      * @return status
@@ -77,7 +137,9 @@ public class Result<T> implements Serializable {
      * @throws IllegalArgumentException if event is null
      */
     public void addEvent(final Event event) {
-        Assert.notNull(event, "Event mustn't be null.");
+        if (event == null) {
+            throw new IllegalArgumentException("Event mustn't be null.");
+        }
 
         this.events.add(event);
         this.status = getNewStatus(event);
@@ -91,81 +153,27 @@ public class Result<T> implements Serializable {
      *                                  or list of events contains null
      */
     public void addEvents(final List<Event> eventList) {
-        Assert.notNull(eventList, "List of events mustn't be null.");
-
-        for (final Event event : eventList) {
-            addEvent(event);
+        if (eventList == null) {
+            throw new IllegalArgumentException("List of events mustn't be null.");
         }
-    }
 
-    /**
-     * Returns result with specified data.
-     *
-     * @param resultData data
-     * @param <T>        type of data
-     * @return result with specified data
-     */
-    public static <T> Result<T> of(final T resultData) {
-        final Result<T> result = new Result<>();
-        result.data = resultData;
-
-        return result;
-    }
-
-    /**
-     * Returns result with specified information message.
-     *
-     * @param key     key
-     * @param message message
-     * @param <T>     type of data
-     * @return result with specified information message
-     * @throws IllegalArgumentException if key is null
-     *                                  or value is null
-     */
-    public static <T> Result<T> info(final String key, final String message) {
-        final Result<T> result = new Result<>();
-        result.addEvent(new Event(Severity.INFO, key, message));
-
-        return result;
-    }
-
-    /**
-     * Returns result with specified warning message.
-     *
-     * @param key     key
-     * @param message message
-     * @param <T>     type of data
-     * @return result with specified warning message
-     * @throws IllegalArgumentException if key is null
-     *                                  or value is null
-     */
-    public static <T> Result<T> warn(final String key, final String message) {
-        final Result<T> result = new Result<>();
-        result.addEvent(new Event(Severity.WARN, key, message));
-
-        return result;
-    }
-
-    /**
-     * Returns result with specified error message.
-     *
-     * @param key     key
-     * @param message message
-     * @param <T>     type of data
-     * @return result with specified error message
-     * @throws IllegalArgumentException if key is null
-     *                                  or value is null
-     */
-    public static <T> Result<T> error(final String key, final String message) {
-        final Result<T> result = new Result<>();
-        result.addEvent(new Event(Severity.ERROR, key, message));
-
-        return result;
+        eventList.forEach(this::addEvent);
     }
 
     @Override
     public String toString() {
         return String.format("Result [status=%s, data=%s, events=%s]", status, data, events);
+    }
+
+    /**
+     * Returns new status.
+     *
+     * @param event event
+     * @return new status
+     */
+    private Status getNewStatus(final Event event) {
+        final Status newStatus = getStatus(event.getSeverity());
+        return status.ordinal() >= newStatus.ordinal() ? status : newStatus;
     }
 
     /**
@@ -180,25 +188,10 @@ public class Result<T> implements Serializable {
             return null;
         }
 
-        for (final Status status : Status.values()) {
-            if (status.ordinal() == severity.ordinal()) {
-                return status;
-            }
-        }
-
-        throw new IllegalArgumentException("No Status found for Severity " + severity);
-    }
-
-    /**
-     * Returns new status.
-     *
-     * @param event event
-     * @return new status
-     */
-    private Status getNewStatus(final Event event) {
-        final Status newStatus = getStatus(event.getSeverity());
-
-        return status.ordinal() >= newStatus.ordinal() ? status : newStatus;
+        return Arrays.stream(Status.values())
+            .filter(status -> status.ordinal() == severity.ordinal())
+            .findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("No Status found for Severity " + severity));
     }
 
 }

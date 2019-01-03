@@ -1,4 +1,4 @@
-package cz.vhromada.result;
+package cz.vhromada.validation.result;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;

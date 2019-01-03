@@ -1,9 +1,7 @@
-package cz.vhromada.result;
+package cz.vhromada.validation.result;
 
 import java.io.Serializable;
 import java.util.Objects;
-
-import org.springframework.util.Assert;
 
 /**
  * A class represents event.
@@ -43,9 +41,15 @@ public class Event implements Serializable {
      *                                  or message is null
      */
     public Event(final Severity severity, final String key, final String message) {
-        Assert.notNull(severity, "Severity mustn't be null.");
-        Assert.notNull(key, "Key mustn't be null.");
-        Assert.notNull(message, "Message mustn't be null.");
+        if (severity == null) {
+            throw new IllegalArgumentException("Severity mustn't be null.");
+        }
+        if (key == null) {
+            throw new IllegalArgumentException("Key mustn't be null.");
+        }
+        if (message == null) {
+            throw new IllegalArgumentException("Message mustn't be null.");
+        }
 
         this.severity = severity;
         this.key = key;

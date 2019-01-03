@@ -1,16 +1,16 @@
-package cz.vhromada.result;
+package cz.vhromada.validation.result;
 
 /**
- * An enum represents status.
+ * An enum represents severity.
  *
  * @author Vladimir Hromada
  */
-public enum Status {
+public enum Severity {
 
     /**
-     * OK
+     * Information
      */
-    OK,
+    INFO,
 
     /**
      * Warning

@@ -1,5 +1,3 @@
-# Validation
+# Result
 
-Common object for result
-
-Support for JSR 303 Bean validation
+Java component for result
