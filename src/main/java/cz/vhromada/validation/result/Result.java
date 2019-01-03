@@ -32,7 +32,7 @@ public class Result<T> implements Serializable {
     /**
      * Events
      */
-    private List<Event> events;
+    private final List<Event> events;
 
     /**
      * Creates a new instance of Result.

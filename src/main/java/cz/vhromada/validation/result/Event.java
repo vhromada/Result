@@ -18,17 +18,17 @@ public class Event implements Serializable {
     /**
      * Severity
      */
-    private Severity severity;
+    private final Severity severity;
 
     /**
      * Key
      */
-    private String key;
+    private final String key;
 
     /**
      * Message
      */
-    private String message;
+    private final String message;
 
     /**
      * Creates a new instance of Event.
