@@ -7,12 +7,12 @@
     <parent>
         <groupId>cz.vhromada.maven</groupId>
         <artifactId>parent</artifactId>
-        <version>2.1.1</version>
+        <version>2.1.2</version>
     </parent>
 
     <groupId>cz.vhromada.validation</groupId>
     <artifactId>result</artifactId>
-    <version>3.0.1</version>
+    <version>3.0.2</version>
 
     <name>Result</name>
     <description>Java component for result</description>
