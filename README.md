@@ -1,3 +1,3 @@
 # Result
 
-Java component for result
+Component for result

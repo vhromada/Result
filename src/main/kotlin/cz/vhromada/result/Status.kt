@@ -1,4 +1,4 @@
-package cz.vhromada.validation.result
+package cz.vhromada.result
 
 /**
  * An enum represents status.

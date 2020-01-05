@@ -5,17 +5,17 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>cz.vhromada.maven</groupId>
-        <artifactId>parent</artifactId>
-        <version>3.0.1</version>
+        <groupId>cz.vhromada.project</groupId>
+        <artifactId>project-parent</artifactId>
+        <version>4.0.1</version>
     </parent>
 
-    <groupId>cz.vhromada.validation</groupId>
+    <groupId>cz.vhromada.result</groupId>
     <artifactId>result</artifactId>
-    <version>4.0.0</version>
+    <version>5.0.0</version>
 
     <name>Result</name>
-    <description>Java component for result</description>
+    <description>Component for result</description>
     <url>https://github.com/vhromada/Result</url>
 
     <licenses>

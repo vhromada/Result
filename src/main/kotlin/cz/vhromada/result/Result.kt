@@ -1,4 +1,4 @@
-package cz.vhromada.validation.result
+package cz.vhromada.result
 
 import java.io.Serializable
 
@@ -93,13 +93,13 @@ class Result<T> : Serializable {
         /**
          * Returns result with specified data.
          *
-         * @param resultData data
-         * @param <T>        type of data
+         * @param data data
+         * @param <T>  type of data
          * @return result with specified data
          */
-        fun <T> of(resultData: T): Result<T> {
+        fun <T> of(data: T): Result<T> {
             val result = Result<T>()
-            result.data = resultData
+            result.data = data
             return result
         }
 

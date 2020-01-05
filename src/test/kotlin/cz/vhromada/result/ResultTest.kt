@@ -1,4 +1,4 @@
-package cz.vhromada.validation.result
+package cz.vhromada.result
 
 import org.assertj.core.api.SoftAssertions.assertSoftly
 import org.junit.jupiter.api.Test

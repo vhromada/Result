@@ -1,4 +1,4 @@
-package cz.vhromada.validation.result
+package cz.vhromada.result
 
 import java.io.Serializable
 
